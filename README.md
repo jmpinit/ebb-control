@@ -1,2 +1,4 @@
-# ebb.js
-JS wrapper for the EiBotBoard - the motor control board in the AxiDraw, Egg-Bot, and WaterColorBot
+# ebb-control
+
+Serial interface library for the EiBotBoard - the controller in the AxiDraw,
+Egg-Bot, and WaterColorBot

@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EBB.js Example</title>
+  </head>
+  <body>
+    <button id="connect" type="button">Connect</button>
+    <div id="controls" hidden>
+      <table>
+        <tr>
+          <td>Nickname:</td><td id="nickname"></td>
+        </tr>
+        <tr>
+          <td>Version:</td><td id="version"></td>
+        </tr>
+        <tr>
+          <td>Pen state:</td><td id="pen-state"></td>
+        </tr>
+        <tr>
+          <td>Motor positions:</td><td id="motor-positions"></td>
+        </tr>
+        <tr>
+          <td>Motor states:</td><td id="motor-states"></td>
+        </tr>
+      </table>
+      <button id="pen-up" type="button">Pen Up</button>
+      <button id="pen-down" type="button">Pen Down</button>
+      <button id="toggle-motor-enable">Enable Motors</button>
+      <button id="draw-square">Draw 10mm Square</button>
+    </div>
+    <script src="/dist/build.js"></script>
+    <script>
+      const ebb = new EBB.EiBotBoard();
+      let enabled = false;
+
+      function wait(ms) {
+        return new Promise((fulfill) => setTimeout(() => fulfill(), ms));
+      }
+
+      async function describePenStatus() {
+        return (await ebb.queryPen()) ? 'down' : 'up';
+      }
+
+      async function updateStatus() {
+        document.getElementById('controls').removeAttribute('hidden');
+
+        document.getElementById('pen-state').innerText = await describePenStatus();
+        document.getElementById('motor-positions').innerText = JSON.stringify(await ebb.queryStepPosition());
+      }
+
+      async function toggleMotorEnable() {
+        if (!enabled) {
+          await ebb.enableMotors(EBB.MOTOR_STEP_DIV16, EBB.MOTOR_STEP_DIV16);
+          document.getElementById('motor-states').innerText = JSON.stringify([EBB.MOTOR_STEP_DIV16, EBB.MOTOR_STEP_DIV16]);
+          document.getElementById('toggle-motor-enable').innerText = 'Disable Motors';
+          enabled = true;
+        } else {
+          await ebb.enableMotors(EBB.MOTOR_DISABLE, EBB.MOTOR_DISABLE);
+          document.getElementById('motor-states').innerText = JSON.stringify([EBB.MOTOR_DISABLE, EBB.MOTOR_DISABLE]);
+          document.getElementById('toggle-motor-enable').innerText = 'Enable Motors';
+          enabled = false;
+        }
+      }
+
+      document.getElementById('toggle-motor-enable').onclick = () => {
+        (async () => {
+          await toggleMotorEnable();
+          await updateStatus();
+        })()
+      };
+
+      document.getElementById('pen-up').onclick = () => {
+        (async () => {
+          await ebb.setPenState(false);
+          await updateStatus();
+        })()
+      };
+
+      document.getElementById('pen-down').onclick = () => {
+        (async () => {
+          await ebb.setPenState(true);
+          await updateStatus();
+        })()
+      };
+
+      const btnDrawSquare = document.getElementById('draw-square');
+      btnDrawSquare.onclick = () => {
+        btnDrawSquare.disabled = true;
+
+        (async () => {
+          if (!enabled) {
+            await toggleMotorEnable();
+          }
+
+          const moveDuration = 500;
+
+          await ebb.stepperMoveMixedAxis(moveDuration, 500, 0);
+          await wait(moveDuration);
+          await updateStatus();
+
+          await ebb.stepperMoveMixedAxis(moveDuration, 0, 500);
+          await wait(moveDuration);
+          await updateStatus();
+
+          await ebb.stepperMoveMixedAxis(moveDuration, -500, 0);
+          await wait(moveDuration);
+          await updateStatus();
+
+          await ebb.stepperMoveMixedAxis(moveDuration, 0, -500);
+          await wait(moveDuration);
+          await updateStatus();
+
+          btnDrawSquare.disabled = false;
+        })();
+      }
+
+      const connectButton = document.getElementById('connect');
+      connectButton.onclick = () => {
+        (async () => {
+          await ebb.connect();
+
+          document.getElementById('nickname').innerText = await ebb.queryNickname();
+          document.getElementById('version').innerText = await ebb.queryVersion();
+
+          updateStatus().then();
+        })()
+      }
+    </script>
+  </body>
+</html>
