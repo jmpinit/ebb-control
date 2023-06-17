@@ -9,6 +9,7 @@
   "scripts": {
     "build": "node node_modules/webpack-cli/bin/cli.js --config webpack.prod.js",
     "watch": "node node_modules/webpack-cli/bin/cli.js watch --config webpack.dev.js",
+    "test": "node node_modules/jest/bin/jest.js",
     "docs": "node node_modules/documentation/bin/documentation.js build -f html -o docs src/index.js"
   },
   "dependencies": {
@@ -22,7 +23,8 @@
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-jest": "^27.1.6",
-    "jest": "^29.3.1",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "jest": "^29.5.0",
     "jest-environment-jsdom": "^29.5.0",
     "webpack": "^5.83.1",
     "webpack-cli": "^5.1.1",
