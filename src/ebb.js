@@ -960,15 +960,25 @@ class EiBotBoard {
       throw new Error('Pin index must be between 0 and 24');
     }
 
-    if (rate < 0 || rate > 2 ** 16 - 1) {
-      throw new Error('Rate must be between 0 and 2^16 - 1');
+    let command = `S2,${position},${pinIndex}`;
+
+    if (rate !== undefined) {
+      if (rate < 0 || rate > 2 ** 16 - 1) {
+        throw new Error('Rate must be between 0 and 2^16 - 1');
+      }
+
+      command += `,${rate}`;
     }
 
-    if (delay < 0 || delay > 2 ** 16 - 1) {
-      throw new Error('Delay must be between 0 and 2^16 - 1');
+    if (delay !== undefined) {
+      if (delay < 0 || delay > 2 ** 16 - 1) {
+        throw new Error('Delay must be between 0 and 2^16 - 1');
+      }
+
+      command += `,${delay}`;
     }
 
-    const response = await this.command(`S2,${position},${pinIndex},${rate},${delay}`);
+    const response = await this.command(command);
 
     if (response !== 'OK') {
       throw new Error(`Unexpected response: ${response}`);
