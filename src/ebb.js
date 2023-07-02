@@ -327,6 +327,7 @@ class EiBotBoard {
 
   /**
    * Read every byte-wide PORTx register (A-E) and return the values.
+   * See {@link https://evil-mad.github.io/EggBot/ebb.html#I}.
    * @returns {Promise<Array<number>>} - Resolves with an array of the port values.
    */
   async getInput() {
