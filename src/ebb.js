@@ -143,8 +143,8 @@ class EiBotBoard {
   /**
    * Configure an analog input channel.
    * See {@link https://evil-mad.github.io/EggBot/ebb.html#AC}.
-   * @param channel - The analog channel number (0-15).
-   * @param enabled - Whether the channel should be enabled.
+   * @param {number} channel - The analog channel number (0-15).
+   * @param {boolean} enabled - Whether the channel should be enabled.
    * @returns {Promise<void>} - Resolves after the command has been acknowledged.
    */
   async analogConfigure(channel, enabled) {
@@ -177,11 +177,11 @@ class EiBotBoard {
    * See {@link https://evil-mad.github.io/EggBot/ebb.html#C} and
    * {@link http://ww1.microchip.com/downloads/en/DeviceDoc/39931d.pdf|the PIC18F46J50 datasheet}.
    * A pin is an input if the corresponding bit in the TRIS register is 1.
-   * @param portA - The 8-bit TRISA value to set.
-   * @param portB - The 8-bit TRISB value to set.
-   * @param portC - The 8-bit TRISC value to set.
-   * @param portD - The 8-bit TRISD value to set.
-   * @param portE - The 8-bit TRISE value to set.
+   * @param {number} portA - The 8-bit TRISA value to set.
+   * @param {number} portB - The 8-bit TRISB value to set.
+   * @param {number} portC - The 8-bit TRISC value to set.
+   * @param {number} portD - The 8-bit TRISD value to set.
+   * @param {number} portE - The 8-bit TRISE value to set.
    */
   async configurePinDirections(portA, portB, portC, portD, portE) {
     assertByte(portA);
@@ -945,10 +945,10 @@ class EiBotBoard {
   /**
    * Control the RC servo output system.
    * See {@link https://evil-mad.github.io/EggBot/ebb.html#S2}.
-   * @param position - The "on time" of the signal, in units of 1/12e6 seconds.
-   * @param pinIndex - The pin index to use.
-   * @param rate - Slew rate between last setting and the new one. 1/12e3 second per 24 ms.
-   * @param delay - Delay the next command in the motion queue by this many milliseconds.
+   * @param {number} position - The "on time" of the signal, in units of 1/12e6 seconds.
+   * @param {number} pinIndex - The pin index to use.
+   * @param {number} rate - Slew rate between last setting and the new one. 1/12e3 second per 24 ms.
+   * @param {number} delay - Delay the next command in the motion queue by this many milliseconds.
    * @returns {Promise<void>} - Resolves when the command has been acknowledged.
    */
   async servoOutput(position, pinIndex, rate, delay) {
@@ -1099,7 +1099,7 @@ class EiBotBoard {
 
   /**
    * Set the value of the layer variable.
-   * @param layerValue - The value to set.
+   * @param {number} layerValue - The value to set.
    * @returns {Promise<void>} - Resolves when the command has been acknowledged.
    */
   async setLayer(layerValue) {
@@ -1144,7 +1144,7 @@ class EiBotBoard {
   /**
    * Set the node count.
    * See {@link https://evil-mad.github.io/EggBot/ebb.html#SN}.
-   * @param value - The node count (0-2^32).
+   * @param {number} value - The node count (0-2^32).
    * @returns {Promise<void>} - Resolves when the node count has been set.
    */
   async setNodeCount(value) {
@@ -1214,7 +1214,7 @@ class EiBotBoard {
   /**
    * Set this EBB's nickname.
    * See {@link https://evil-mad.github.io/EggBot/ebb.html#ST}.
-   * @param nickname
+   * @param {string} nickname
    * @returns {Promise<void>} - Resolves when the nickname has been set.
    */
   async setNickname(nickname) {
@@ -1305,9 +1305,9 @@ class EiBotBoard {
   /**
    * Stepper move, for mixed-axis geometries.
    * See {@link https://evil-mad.github.io/EggBot/ebb.html#XM}.
-   * @param durationMs - Duration of the move in milliseconds.
-   * @param stepsA
-   * @param stepsB
+   * @param {number} durationMs - Duration of the move in milliseconds.
+   * @param {number} stepsA
+   * @param {number} stepsB
    * @returns {Promise<void>} - Resolves when the command is acknowledged.
    */
   async stepperMoveMixedAxis(durationMs, stepsA, stepsB) {
