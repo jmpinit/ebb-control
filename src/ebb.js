@@ -445,10 +445,10 @@ class EiBotBoard {
   }
 
   /**
-   * Read memory address.
+   * Read the byte value at a memory address.
    * See {@link https://evil-mad.github.io/EggBot/ebb.html#MR}.
    * @param {number} address - Address to read (0 to 4095).
-   * @returns {Promise<number>} - Resolves with the value at the given address.
+   * @returns {Promise<number>} - Resolves with the byte value at the given address.
    */
   async memoryRead(address) {
     if (address < 0 || address > 4095) {
@@ -467,10 +467,10 @@ class EiBotBoard {
   }
 
   /**
-   * Write given memory address.
+   * Write a byte value at the given memory address.
    * See {@link https://evil-mad.github.io/EggBot/ebb.html#MW}.
    * @param {number} address - Address to write (0 to 4095).
-   * @param {number} value - Value to write (0 to 255).
+   * @param {number} value - Byte value to write (0 to 255).
    * @returns {Promise<void>} - Resolves after the command has been acknowledged.
    */
   async memoryWrite(address, value) {
