@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
   mode: 'development',
-  entry: './src/index.js',
+  entry: './src/index.browser.js',
   output: {
     filename: 'build.js',
     path: path.resolve(__dirname, 'dist'),

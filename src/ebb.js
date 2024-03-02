@@ -1,6 +1,6 @@
 // See https://evil-mad.github.io/EggBot/ebb.html
 
-const SerialPort = require('./serial');
+const SerialPort = require('./web-serialport');
 
 const BAUD_RATE = 115200;
 
@@ -42,8 +42,8 @@ function assertValidPortLetter(portLetter) {
 }
 
 class EiBotBoard {
-  constructor() {
-    this.port = new SerialPort();
+  constructor(port) {
+    this.port = port;
 
     this.pending = [];
     this.responseHandlers = [];

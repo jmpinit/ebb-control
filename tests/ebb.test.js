@@ -1,6 +1,6 @@
-jest.mock('../src/serial');
+jest.mock('../src/web-serialport');
 
-const SerialPort = require('../src/serial');
+const SerialPort = require('../src/web-serialport');
 const { EiBotBoard, MOTOR_STEP_DIV4, MOTOR_STEP_DIV16 } = require('../src/ebb');
 
 afterEach(() => {

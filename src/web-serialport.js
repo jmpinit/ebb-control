@@ -1,18 +1,19 @@
 /* eslint no-await-in-loop: 0 */
 const EventEmitter = require('eventemitter3');
 
-class SerialPort extends EventEmitter {
-  constructor() {
+class WebSerialPort extends EventEmitter {
+  constructor(baudRate) {
     super();
 
+    this.baudRate = baudRate;
     this.port = null;
     this.reader = null;
     this.buffer = '';
   }
 
-  async connect(baudRate) {
+  async connect() {
     this.port = await navigator.serial.requestPort();
-    await this.port.open({ baudRate });
+    await this.port.open({ baudRate: this.baudRate });
 
     // Start listening for incoming data
     this.listen().then();
@@ -87,4 +88,4 @@ class SerialPort extends EventEmitter {
   }
 }
 
-module.exports = SerialPort;
+module.exports = WebSerialPort;

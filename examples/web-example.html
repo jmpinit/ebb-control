@@ -32,7 +32,8 @@
     </div>
     <script src="/dist/build.js"></script>
     <script>
-      const ebb = new EBB.EiBotBoard();
+      const serialPort = new EBB.SerialPort(115200);
+      const ebb = new EBB.EiBotBoard(serialPort);
       let enabled = false;
 
       function wait(ms) {
